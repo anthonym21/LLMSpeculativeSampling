@@ -23,8 +23,7 @@ def parse_arguments():
     parser.add_argument('--approx_model_name', type=str, default="/share_nfs/fangjiarui/root/code/hf_models/bloom-560m")
     parser.add_argument('--target_model_name', type=str, default="/share_nfs/fangjiarui/root/code/hf_models/bloomz-7b1")
     parser.add_argument('--verbose', '-v', action='store_true', default=False, help='enable verbose mode')
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 # copy from https://github.com/LeeSinLiang/microGPT/blob/ed40cf9780dbeb180adfe94c227d4aa97e69250e/gpt.py
 def top_k_top_p_filter(logits: torch.Tensor, top_k: int = 0, top_p: float = 0.0):
@@ -67,8 +66,7 @@ def norm_logits(logits : torch.Tensor, temperature : float, top_k : float, top_p
     """
     logits = logits / temperature
     logits = top_k_top_p_filter(logits, top_k=top_k, top_p=top_p)
-    probs = F.softmax(logits, dim=1)
-    return probs
+    return F.softmax(logits, dim=1)
 
 
 def sample(probs : torch.Tensor, num_samples: int = 1):
